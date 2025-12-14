@@ -1,0 +1,1071 @@
+/* Spotlight effect */
+body {
+  background: #0a192f; /* Set a dark background for better visibility */
+  color: #ccd6f6;
+  overflow: auto; /* Enable scrolling */
+  height: auto; /* Allow content to dictate height */
+  position: relative;
+  font-family: "Lato", sans-serif;
+  line-height: 1.6;
+}
+
+/* Flashlight styles */
+#flashlight {
+  position: fixed;
+  top: -500px;
+  left: -500px;
+  width: 700px; /* Reduce size for subtlety */
+  height: 700px; /* Reduce size for subtlety */
+  border-radius: 50%;
+  pointer-events: none; /* Ensure it doesn't block interactions */
+  background: radial-gradient(circle, #64ffdb79 0%, transparent 50%);
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  mix-blend-mode: soft-light; /* Softer blending for a subtle effect */
+  transition: background 0.3s ease; /* Smooth transition for a polished effect */
+}
+
+/* Disable flashlight effect on mobile */
+@media (max-width: 768px) {
+  #flashlight {
+    display: none;
+  }
+}
+
+#nav-list a.active {
+  color: #64ffda; /* Highlighted color */
+  font-weight: bold;
+  border-bottom: 2px solid #64ffda; /* Optional underline */
+}
+
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #1a73e8;
+}
+
+ul {
+  list-style: none;
+}
+
+/* SOCIAL MEDIA SIDEBAR */
+.social-media-sidebar {
+  position: fixed; /* Keeps the icons fixed while scrolling */
+  left: 20px; /* Distance from the left edge */
+  bottom: 0px; /* Distance from the bottom edge */
+  display: flex;
+  flex-direction: column; /* Stack the icons vertically */
+  align-items: center;
+  z-index: 1000; /* Ensures it stays above other elements */
+}
+
+/* Style for the icons */
+.social-media-sidebar i {
+  font-size: 30px; /* Resize the icons */
+  color: #ccd6f6; /* Change the color of the icons */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for icons */
+.social-media-sidebar a:hover i {
+  color: #64ffda; /* Example: Change to blue on hover */
+  transform: scale(1.2); /* Enlarge the icon slightly on hover */
+}
+
+/* Social media sidebar - hidden by default on mobile */
+@media (max-width: 768px) {
+  .social-media-sidebar {
+    display: none; /* Initially hidden on mobile */
+    position: fixed;
+    right: 20px;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0; /* Initially invisible */
+    transform: translateY(100px); /* Start 100px below */
+    transition: opacity 0.8s ease, transform 0.8s ease, bottom 0.8s ease; /* Smooth fade and movement */
+  }
+
+  .social-media-sidebar.visible {
+    display: flex; /* Show the sidebar when toggled */
+    opacity: 1; /* Gradually fade in */
+    bottom: 20px; /* Move into final position (20px above viewport edge) */
+    transform: translateY(0); /* Move into view */
+  }
+
+  .social-media-sidebar.float-up {
+    transform: translateY(-20px); /* Float up slightly */
+    transition: transform 0.5s ease; /* Smooth float-up animation */
+  }
+
+  /* Style for the icons */
+  .social-media-sidebar i {
+    font-size: 30px; /* Resize the icons */
+    color: #ccd6f6; /* Change the color of the icons */
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Hover effect for icons */
+  .social-media-sidebar a:hover i {
+    color: #64ffda;
+    transform: scale(1.2);
+  }
+}
+
+.social-media-sidebar a {
+  margin: 10px 0; /* Space between icons */
+  display: block;
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth hover effect */
+}
+
+.social-media-sidebar img {
+  width: 30px; /* Adjust icon size */
+  height: 30px;
+  filter: grayscale(100%); /* Make icons grayscale by default */
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.social-media-sidebar a:hover img {
+  filter: grayscale(0); /* Remove grayscale on hover */
+  transform: scale(1.2); /* Slightly enlarge the icon */
+}
+
+/* START - HEADER */
+header {
+  background-color: transparent; /* Make header background transparent */
+  padding: 6px 18px; /* Reduced padding */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+/* When user scrolls past the hero section */
+header.scrolled {
+  background-color: #112240; /* Solid background after scrolling */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+/* Responsive header styles for mobile */
+@media (max-width: 768px) {
+  header {
+    background-color: transparent; /* Initially transparent on mobile */
+  }
+
+  /* When user scrolls, add scrolled class */
+  header.scrolled {
+    background-color: #112240; /* Solid background */
+  }
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+nav ul li {
+  margin: 0 20px;
+}
+
+nav ul li a {
+  color: #f5f5f5;
+  text-decoration: none;
+  padding: 6px 12px;
+  display: inline-block;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  text-align: center;
+}
+
+nav ul li a:hover {
+  color: #64ffda;
+  filter: brightness(1.5);
+}
+
+/* END - HEADER */
+
+/* START - MENU ICON FOR MOBILE */
+/* Hide mobile-menu-header by default */
+.mobile-menu-header {
+  display: none; /* Hidden by default on larger screens */
+}
+
+/* Menu icon for mobile */
+.menu-icon {
+  display: none; /* Hidden by default on larger screens */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 18px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 30px;
+}
+
+.menu-icon div {
+  background-color: #f5f5f5;
+  height: 3px;
+  width: 100%;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 100fr 1fr; /* Desktop: Left, Center, Right */
+  gap: 10px;
+  padding: 10px;
+}
+
+/* Left and Right Narrow Columns */
+.left-column,
+.right-column {
+  background-color: transparent;
+}
+
+/* Center Column */
+.center-column {
+  background-color: #0a192f;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Responsive Layout for Mobile */
+@media (max-width: 768px) {
+  .main-content {
+    display: flex; /* Switch to flex layout for full width */
+    flex-direction: column; /* Stack elements vertically */
+    padding: 0px;
+  }
+
+  .left-column,
+  .right-column {
+    display: none; /* Hide the left and right columns on mobile */
+  }
+
+  .center-column {
+    width: 100%; /* Make the center column fill the full width */
+    padding: 0px; /* Adjust padding for smaller screens */
+    border-radius: 0; /* Remove rounded corners to align with full width */
+  }
+}
+
+/* Desktop Logo Styling */
+.logo img {
+  width: 45px; /* Adjust the size of the logo */
+  height: auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.logo img:hover {
+  transform: scale(1.15);
+}
+
+/* RESPONSIVE STYLE FOR NAVIGATION */
+@media (max-width: 768px) {
+  header {
+    background-color: #112240; /* Keep header visible in mobile/tablet view */
+  }
+
+  /* Show the hamburger icon */
+  .menu-icon {
+    display: flex;
+    position: absolute; /* Make it possible to position it relative to the corner */
+    right: 0px; /* Adjust the horizontal spacing from the right */
+    z-index: 1000; /* Ensure it stays on top of other elements */
+    cursor: pointer; /* Add a pointer cursor for better UX */
+  }
+
+  /* Transform hamburger to a close (X) icon when the menu is open */
+  .menu-icon.open div:nth-child(1),
+  .menu-icon.open div:nth-child(3) {
+    position: relative; /* Keep them within the normal flow */
+    transform-origin: center; /* Rotate around the center */
+  }
+
+  .menu-icon.open div:nth-child(1) {
+    transform: rotate(45deg) translateY(9px) translateZ(0px); /* Rotate and move down */
+  }
+
+  .menu-icon.open div:nth-child(2) {
+    opacity: 0; /* Hide the middle line */
+  }
+
+  .menu-icon.open div:nth-child(3) {
+    transform: rotate(-45deg) translateY(-11px) translateX(2px) translateZ(0px); /* Rotate and move up */
+  }
+
+  /* Mobile menu sliding in from the left */
+  nav ul {
+    position: fixed; /* Fix the menu to the viewport */
+    top: 60px; /* Keep it below the header */
+    left: -100%; /* Initially hide off-screen */
+    height: calc(100% - 60px); /* Adjust height to account for header height */
+    width: 100%; /* Full screen width */
+    background-color: #112240;
+    display: flex; /* Flexbox for alignment */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Vertically center the menu items */
+    align-items: center; /* Horizontally center the menu items */
+    transition: left 0.5s ease; /* Smooth sliding transition */
+    z-index: 9;
+  }
+
+  nav ul.open {
+    left: 0; /* When toggled, bring the menu into view */
+  }
+
+  nav ul li {
+    margin: 20px 0; /* Add spacing between menu items */
+    transform: translateY(-60px); /* Move the items 60px upwards */
+  }
+
+  nav ul li:last-child {
+    position: static; /* No need for absolute positioning since flexbox handles centering */
+  }
+}
+
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative; /* Ensure overlay stays within the section */
+  height: 100vh; /* Makes the hero section fill the entire screen height */
+  width: 100%; /* Ensures it spans the full width */
+  background-size: cover; /* Ensures the image covers the whole section */
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #f5f5f5;
+  z-index: 1; /* Layer control */
+  padding-left: 50px; /* Optional padding for inner content */
+  padding-top: 50px;
+  padding-right: 50px;
+}
+
+.hero-section::before {
+  content: ""; /* Required for the pseudo-element */
+  position: absolute; /* Overlay needs to be positioned absolutely */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 25, 47, 0.8); /* Semi-transparent black overlay */
+  z-index: -1; /* Put the overlay behind the content but above the background image */
+}
+
+.hero-container {
+  position: relative; /* This makes sure content stays above the overlay */
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 2; /* Ensures the content is above the overlay */
+}
+
+.hero-left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.hero-left h1 {
+  font-size: 3rem; /* Increase the font size */
+  font-weight: bold; /* Make it bold for better visibility */
+  margin-bottom: 20px; /* Add some space below */
+  color: #f5f5f5; /* Keep the color consistent */
+}
+
+.hero-left h2 {
+  font-size: 1.5rem; /* Increase the subheading size */
+  font-weight: 600; /* Light font weight for contrast */
+  margin-bottom: 30px; /* Add spacing below */
+  color: #64ffda; /* Highlight color */
+}
+
+.hero-left p {
+  font-size: 1.2rem; /* Increase the paragraph size */
+  line-height: 1.6; /* Improve readability */
+  margin-bottom: 40px; /* Add more spacing below */
+  max-width: 700px; /* Limit the width for better alignment */
+  color: #d3d3d3; /* Lighter color for the paragraph */
+}
+
+.hero-photo {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+
+  /* ⬇️ INI KUNCI UTAMA */
+  object-position: center 20%; /* Turunin fokus, biar nggak terlalu close */
+
+  border-radius: 16px;
+  background-color: #ffffff; /* bantu kasih napas visual */
+  padding: 18px;             /* jarak antara foto & frame */
+
+  box-shadow:
+    0 12px 40px rgba(100, 255, 218, 0.35),
+    0 0 0 2px rgba(100, 255, 218, 0.15);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/* Subtle hover effect (optional tapi cakep) */
+.hero-photo:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 18px 55px rgba(100, 255, 218, 0.45),
+    0 0 0 2px rgba(100, 255, 218, 0.25);
+}
+
+
+/* RESPONSIVE STYLE FOR HERO SECTION */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column; /* Stack the elements vertically */
+    justify-content: center; /* Center-align content */
+    align-items: center; /* Center-align items */
+    height: auto; /* Remove fixed height */
+    padding: 100px 20px; /* Add padding */
+    margin-bottom: 50px; /* Add space below the hero section */
+  }
+
+  .hero-container {
+    flex-direction: column; /* Stack the container content vertically */
+    text-align: center; /* Center-align text */
+  }
+
+  .hero-right {
+    order: 1; /* Make the image come first */
+    width: 100%; /* Use full width for the image */
+    text-align: center; /* Center-align image */
+    margin-bottom: 20px; /* Add spacing below the image */
+  }
+
+@media (max-width: 768px) {
+  .hero-photo {
+    max-width: 280px;
+    padding: 14px;
+    object-position: center 18%;
+  }
+}
+
+
+
+  .hero-left {
+    order: 2; /* Ensure the text comes after the image */
+    margin-bottom: 20px; /* Add spacing below the text */
+  }
+
+  .hero-left h1 {
+    font-size: 2.5rem; /* Adjust size for smaller screens */
+  }
+
+  .hero-left h2 {
+    font-size: 1.5rem; /* Adjust size for smaller screens */
+  }
+
+  .hero-left p {
+    font-size: 1rem; /* Adjust size for smaller screens */
+    max-width: 90%; /* Reduce width to fit the screen */
+    margin: 0 auto; /* Center-align the text */
+  }
+}
+
+/* Experiences Section */
+.experiences-section {
+  background-color: #0a192f;
+  padding: 100px 20px;
+  color: #ccd6f6;
+}
+
+.experiences-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr; /* Left: 1/4, Right: 3/4 */
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.experiences-left {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.experiences-left h2 {
+  font-size: 2.5rem;
+  color: #64ffda;
+  margin-bottom: 20px;
+}
+
+.experiences-left p {
+  font-size: 1rem;
+  color: #ccd6f6;
+  line-height: 1.6;
+}
+
+/* CV Button Styles */
+.btn-cv {
+  display: inline-block;
+  margin-top: 30px; /* Add spacing */
+  padding: 10px 20px; /* Button padding */
+  color: #112240; /* Button text color */
+  background-color: #64ffda; /* Button background */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Bold text */
+  font-size: 1rem; /* Font size */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect for the button */
+.btn-cv:hover {
+  background-color: #52d9b9; /* Darken button background on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+/* Add scroll to the experiences-right container */
+.experiences-right {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-height: calc(
+    3 * 250px + 2 * 40px
+  ); /* Approximate max height for 3 rows */
+  overflow-y: auto; /* Add vertical scroll for excess content */
+  padding-right: 10px; /* Add some space for the scroll bar */
+}
+
+/* Optional: Customize the scroll bar for better design */
+.experiences-right::-webkit-scrollbar {
+  width: 6px; /* Adjust width of the scrollbar */
+}
+
+.experiences-right::-webkit-scrollbar-thumb {
+  background-color: #64ffda; /* Highlight scrollbar */
+  border-radius: 5px; /* Round edges */
+}
+
+.experiences-right::-webkit-scrollbar-track {
+  background-color: #112240; /* Background of the scrollbar track */
+}
+
+.experience-row {
+  display: grid;
+  grid-template-columns: 1fr 3fr; /* Year (1/4), Details (3/4) */
+  gap: 20px;
+  background-color: #0a192f; /* Match main background color */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+  padding: 20px;
+  border-radius: 8px;
+}
+/* Experience row - hover effect */
+.experience-row:hover {
+  background-color: #112240; /* Slightly lighter color for hover effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Add subtle shadow */
+}
+
+.experience-row:hover h3 {
+  color: #64ffda; /* Highlight text on hover */
+}
+
+.experience-row:hover p {
+  color: #ccd6f6; /* Highlight text on hover */
+}
+
+.experience-row:hover ul {
+  color: #ccd6f6; /* Highlight text on hover */
+}
+
+.experience-row:hover h4 {
+  color: #64ffda; /* Highlight text on hover */
+}
+.experience-row:hover span {
+  background-color: #0a192f;
+  color: #64ffda;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border: 1px solid #64ffda;
+  border-radius: 5px;
+}
+
+.experience-year h4 {
+  color: #8892b0;
+  font-size: 1rem;
+  margin: 10px;
+}
+
+.experience-details h3 {
+  font-size: 1.5rem;
+  color: #8892b0;
+  margin-bottom: 10px;
+}
+
+.experience-details ul {
+  font-size: 1rem;
+  color: #8892b0;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  list-style: disc; /* Ensures bullets are displayed */
+  padding-left: 20px; /* Adds indentation for the list */
+}
+
+.experience-details p {
+  font-size: 1rem;
+  color: #8892b0;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tech-stack span {
+  background-color: #0a192f;
+  color: #8892b0;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border: 1px solid #8892b0;
+  border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .experiences-container {
+    grid-template-columns: 1fr; /* Single-column layout */
+  }
+  .experiences-right {
+    max-height: 60vh; /* Limit height to a percentage of the viewport */
+    overflow-y: auto; /* Allow scrolling within the container */
+    scroll-snap-type: y mandatory; /* Enable scroll snapping */
+  }
+  .experience-row {
+    grid-template-columns: 1fr; /* Stack year and details vertically */
+    scroll-snap-align: start; /* Snap each row to the top */
+  }
+}
+
+/* General Project Section Styling */
+.project-section {
+  background-color: #0a192f;
+  padding: 100px 20px;
+  color: #ccd6f6;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #64ffda;
+  margin-bottom: 50px;
+}
+
+/* Carousel container */
+.carousel-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  overflow: hidden; /* Hide overflowing projects */
+}
+
+.projects-container {
+  display: flex; /* Display project items in a row */
+  transition: transform 0.5s ease-in-out; /* Smooth transition for slides */
+}
+
+/* Class to temporarily disable transition for instant snaps */
+.projects-container.no-transition {
+    transition: none !important;
+}
+
+
+.project-item {
+  flex: 0 0 100%; /* Each item takes full width of the container */
+  width: 100%; /* Explicitly ensure full width */
+  display: flex; /* Ensure project content lays out correctly */
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  background-color: #112240; /* Slightly lighter navy */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  overflow: hidden;
+  position: relative; /* Necessary for background positioning */
+}
+
+.project-image {
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 25%;
+}
+
+.project-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* The dark overlay */
+.project-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.0); /* Lighter dark layer for brighter image */
+  transition: opacity 0.3s ease; /* Smooth transition on hover */
+  border-radius: 10px; /* Match the image's border radius */
+  z-index: 2; /* Place it above the image */
+  opacity: 1; /* Overlay is visible by default */
+}
+
+
+.project-content {
+  flex: 1 1 50%;
+  padding: 20px;
+  z-index: 2; /* Ensure content stays above the background */
+}
+
+.featured-project {
+  font-size: 0.9rem;
+  color: #64ffda;
+  margin-bottom: 10px;
+}
+
+.project-title {
+  font-size: 1.8rem;
+  color: #64ffda;
+  margin-bottom: 20px;
+}
+
+.project-description {
+  font-size: 1rem;
+  color: #ccd6f6;
+  margin-bottom: 20px;
+}
+
+.project-description a {
+  color: #64ffda;
+  text-decoration: none;
+}
+
+.project-description a:hover {
+  text-decoration: underline;
+}
+
+.project-tech-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.project-tech-list li {
+  background-color: #112240;
+  color: #64ffda;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  border: 1px solid #64ffda;
+}
+
+.project-links {
+  display: flex;
+  gap: 15px;
+}
+
+.project-link img {
+  width: 24px;
+  height: 24px;
+  filter: invert(64%) sepia(18%) saturate(745%) hue-rotate(155deg)
+    brightness(94%) contrast(88%);
+  transition: filter 0.3s ease;
+}
+
+.project-link img:hover {
+  filter: invert(84%) sepia(39%) saturate(707%) hue-rotate(143deg)
+    brightness(94%) contrast(88%);
+}
+
+/* Carousel buttons */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(100, 255, 218, 0.8);
+    color: #112240;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 5; /* Above project items */
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-button:hover {
+    background-color: #64ffda;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+/* Pagination dots */
+.carousel-pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 5;
+}
+
+.pagination-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #8892b0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.pagination-dot.active {
+    background-color: #64ffda;
+    transform: scale(1.2);
+}
+
+/* Responsive Styles */
+@media (max-width: 1500px) {
+  .project-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    position: relative;
+    padding: 20px 60px; /* Increased horizontal padding to prevent overlap with arrows */
+  }
+
+  /* Hide the image element */
+  .project-image {
+    display: none;
+  }
+
+  .project-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden; /* Ensure the content stays within bounds */
+  }
+
+  .project-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 25, 47, 0.85); /* Semi-transparent overlay */
+    z-index: 1;
+  }
+
+  .project-content {
+    position: relative;
+    z-index: 2; /* Ensure it stays above the background and overlay */
+    background: rgba(10, 25, 47, 0.85); /* Background for readability */
+    padding: 20px 0; /* Keep vertical, remove horizontal as parent handles it */
+  }
+
+  .project-title {
+    font-size: 1.5rem; /* Slightly smaller title for smaller screens */
+  }
+
+  .project-description {
+    font-size: 0.9rem;
+    color: #ccd6f6; /* Lighter text for readability */
+  }
+
+  .project-tech-list li {
+    font-size: 0.8rem;
+  }
+}
+
+/* Styles for the project updates section */
+.project-updates {
+  margin-top: 30px; /* Add spacing above */
+  text-align: center; /* Center-align the text */
+  color: #ccd6f6; /* Slightly brighter color */
+  font-size: 1rem; /* Slightly larger font size */
+  line-height: 1.6; /* Improve readability */
+  padding: 15px 20px; /* Add padding */
+  border-bottom: 2px solid #64ffda; /* Highlight with a border */
+
+  background-color: #0a192f; /* Subtle background highlight */
+  max-width: 600px; /* Constrain the width */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Add hover effect */
+}
+
+/* Subtle hover effect */
+.project-updates:hover {
+  transform: scale(1.02); /* Slight zoom */
+}
+
+.project-updates.highlight {
+  animation: glow 3s infinite; /* Subtle glowing animation */
+}
+
+/* Mobile-Friendly View */
+@media (max-width: 768px) {
+  .project-item {
+    padding: 20px 10px 100px; /* Adjust padding for mobile */
+  }
+
+  .project-content {
+    padding: 15px;
+  }
+
+  .project-title {
+    font-size: 1.3rem;
+  }
+
+  .project-description {
+    font-size: 0.85rem;
+  }
+
+  .project-tech-list li {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .project-links img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Footer */
+/* Footer Section */
+.contact-section {
+  background-color: #0a192f; /* Dark background similar to the image */
+  color: #ccd6f6; /* Soft white color for text */
+  text-align: center;
+  padding: 250px 20px; /* Add padding for spacing */
+}
+
+.contact-section h2 {
+  font-size: 3rem; /* Large font size for the heading */
+  font-weight: bold; /* Make the heading bold */
+  color: #64ffda; /* Highlighted color for heading */
+  margin-bottom: 10px; /* Space below the heading */
+}
+
+.contact-section h3 {
+  font-size: 1.2rem; /* Slightly smaller font size for paragraph */
+  line-height: 1.8; /* Add line height for readability */
+  color: #8892b0; /* Softer shade for the paragraph */
+  max-width: 600px; /* Restrict width for better alignment */
+  margin: 0 auto; /* Center the paragraph */
+  margin-bottom: 20px;
+  font-weight: lighter;
+}
+
+.contact-form {
+  display: grid;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+}
+
+.contact-form button {
+  padding: 10px 20px;
+  background-color: #64ffda;
+  border: none;
+  color: #112240;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.footer-section p {
+  background-color: #0a192f; /* Background color */
+  color: white; /* Text color */
+  text-align: center;
+  bottom: 0; /* Align to the bottom of the viewport */
+  left: 0; /* Ensure it stretches from the left */
+  width: 100%; /* Full width */
+  z-index: 1000; /* Ensure it stays on top of other content */
+  padding: 10px;
+}
+
+/* Default style for desktop: underlined */
+.highlighted-email {
+  text-decoration: underline;
+  color: #64ffda;
+  font-weight: normal; /* Ensure it's not bold by default */
+  transition: color 0.3s ease;
+}
+
+/* Hover effect for desktop */
+.highlighted-email:hover {
+  color: #52d9b9; /* Slightly darker color on hover */
+}
+
+/* Mobile view: bold without underline */
+@media (max-width: 768px) {
+  .highlighted-email {
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make it bold */
+  }
+}
